@@ -1,0 +1,8 @@
+# Specifies intentionally untracked files to ignore when using Git
+# http://git-scm.com/docs/gitignore
+
+/Casos_De_Prueba
+nul
+ejercicio3
+ejercicio2
+ejercicio1

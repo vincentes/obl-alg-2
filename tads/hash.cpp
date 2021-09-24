@@ -37,7 +37,7 @@ int Hash<T>::supPrime(int n) {
         if (isPrime(prime))
             found = true;
     }
-    return found;
+    return prime;
 }
 
 template <class T>
@@ -61,9 +61,8 @@ int Hash<T>::hashPos(string key) {
     int hashVal = 0;
     int p = 7;
     for(int i = 0; i < key.length(); i++) {
-        hashVal += int(key[i]) * p ^ i;
+        hashVal += (int)key[i] * p ^ i;
     }
-
     return hashVal % top;
 }
 
@@ -88,6 +87,7 @@ void Hash<T>::insert(string key) {
             } else if(node->value == 3) {
                 twos--;
             }
+            return;
         }
         node = node->next;
     }

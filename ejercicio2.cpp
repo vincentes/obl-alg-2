@@ -12,7 +12,6 @@ int main() {
     for(int i = 0; i < N; i++) {
         string word;
         cin >> word;
-        cout << "FOUND " << word << " " << i + 1 << "/" << N << endl;
         hash.insert(word);
     }
 
