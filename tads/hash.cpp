@@ -7,6 +7,7 @@ HashNode<T>::HashNode(string key, T value) {
     this->key = key;
     this->value = value;
 }
+
 template <class T>
 HashNode<T>::HashNode(string key, T value, HashNode<T> *next) {
     this->key = key;

@@ -4,8 +4,6 @@
 using namespace std;
 
 int main() {
-    // MEJORAR EL HASH PARA EVITAR COLISIONES
-    // HAY PALABRAS QUE SE ESTAN CONTANDO DEMAS
     int N;
     cin >> N;
     Hash<int> hash = Hash<int> (N);

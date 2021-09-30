@@ -1,8 +1,9 @@
 # Specifies intentionally untracked files to ignore when using Git
 # http://git-scm.com/docs/gitignore
 
-/Casos_De_Prueba
+/test-cases
 nul
 ejercicio3
 ejercicio2
 ejercicio1
+cmake-build-debug
