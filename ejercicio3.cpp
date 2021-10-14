@@ -1,4 +1,5 @@
 #include "tads/heap.cpp"
+#include "tads/heap.h"
 #include <iostream>
 
 using namespace std;

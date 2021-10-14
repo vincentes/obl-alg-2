@@ -1,5 +1,5 @@
-using namespace std;
-
+#ifndef HEAP_H
+#define HEAP_H
 class HeapNode
 {
 public:
@@ -44,3 +44,5 @@ public:
     Heap(int capacity);
     ~Heap();
 };
+
+#endif

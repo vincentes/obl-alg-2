@@ -1,5 +1,4 @@
 #include "heap.h"
-
 using namespace std;
 
 HeapNode::HeapNode(int key, int* list, int length) {
@@ -19,7 +18,7 @@ void HeapNode::removeKey() {
 }
 
 Heap::Heap(int capacity) {
-    this->items = new HeapNode*[capacity];
+    this->items = new HeapNode[capacity];
     this->capacity = capacity;
     this->size = 0;
 }
@@ -65,7 +64,7 @@ int Heap::parent(int index) {
 }
 
 void Heap::swap(int indexOne, int indexTwo) {
-    HeapNode temp = items[indexOne];
+    HeapNode* temp = items[indexOne];
     items[indexOne] = items[indexTwo];
     items[indexTwo] = temp;
 }
@@ -94,7 +93,7 @@ int Heap::poll() {
 }
 
 void Heap::add(int key, int* list, int n) {
-    HeapNode item = new HeapNode(key, list, n);
+    HeapNode* item = new HeapNode(key, list, n);
     ensureExtraCapacity(item.length);
     items[size] = item;
     size++;
