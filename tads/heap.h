@@ -8,6 +8,7 @@ public:
     int pos;
     int length;
     HeapNode(int key, int* list, int length);
+    HeapNode();
     ~HeapNode();
     void removeKey();
     void updateKey();
@@ -16,7 +17,7 @@ public:
 class Heap
 {
 private:
-    HeapNode* items;
+    HeapNode** items;
     int capacity;
     int size;
     int getLeftChildIndex(int parentIndex);
@@ -33,7 +34,6 @@ private:
     void swap(int indexOne, int indexTwo);
     void heapifyDown();
     void heapifyUp();
-    void ensureExtraCapacity();
 
 public:
     int peek();

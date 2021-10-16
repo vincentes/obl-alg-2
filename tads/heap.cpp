@@ -1,5 +1,5 @@
 #include "heap.h"
-using namespace std;
+#include "iostream"
 
 HeapNode::HeapNode(int key, int* list, int length) {
     this->key = key;
@@ -8,17 +8,22 @@ HeapNode::HeapNode(int key, int* list, int length) {
     this->length = length;
 }
 
+HeapNode::HeapNode() {
+
+}
+
 HeapNode::~HeapNode() {
     delete[] this->list;
 }
 
 void HeapNode::removeKey() {
+
     key = list[pos];
     pos++;
 }
 
 Heap::Heap(int capacity) {
-    this->items = new HeapNode[capacity];
+    this->items = new HeapNode*[capacity];
     this->capacity = capacity;
     this->size = 0;
 }
@@ -52,15 +57,15 @@ bool Heap::hasParent(int index) {
 }
 
 int Heap::leftChild(int index) {
-    return items[getLeftChildIndex(index)].key;
+    return items[getLeftChildIndex(index)]->key;
 }
 
 int Heap::rightChild(int index) {
-    return items[getRightChildIndex(index)].key;
+    return items[getRightChildIndex(index)]->key;
 }
 
 int Heap::parent(int index) {
-    return items[getParentIndex(index)].key;
+    return items[getParentIndex(index)]->key;
 }
 
 void Heap::swap(int indexOne, int indexTwo) {
@@ -70,7 +75,7 @@ void Heap::swap(int indexOne, int indexTwo) {
 }
 
 int Heap::peek() {
-    return items[0].key;
+    return items[0]->key;
 }
 
 bool Heap::isEmpty() {
@@ -78,15 +83,17 @@ bool Heap::isEmpty() {
 }
 
 int Heap::poll() {
-    int item = items[0].key;
-    items[0].removeKey();
-    if(items[0].length == items[0].pos) {
-        delete items[0];
+    int item = items[0]->key;
+
+    // Is items[0] empty
+    if(items[0]->length == items[0]->pos) {
+        swap(0, size - 1);
+        delete items[size - 1];
+        size--;
     } else {
-        add(items[0].key, items[0].list, items[0].length);
+        items[0]->removeKey();
     }
-    items[0] = items[size - 1];
-    size--;
+
     heapifyDown();
 
     return item;
@@ -94,7 +101,6 @@ int Heap::poll() {
 
 void Heap::add(int key, int* list, int n) {
     HeapNode* item = new HeapNode(key, list, n);
-    ensureExtraCapacity(item.length);
     items[size] = item;
     size++;
     heapifyUp();
@@ -122,17 +128,5 @@ void Heap::heapifyDown() {
             swap(index, smallerChildIndex);
         }
         index = smallerChildIndex;
-    }
-}
-
-void Heap::ensureExtraCapacity(int n) {
-    if(size == capacity) {
-        HeapNode* newArray = new HeapNode[capacity + n];
-        for(int i = 0; i < capacity; i++) {
-            newArray[i] = items[i];
-        }
-        capacity += n;
-        delete[] items;
-        items = newArray;
     }
 }
