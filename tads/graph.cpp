@@ -21,9 +21,6 @@ int Graph::dfsRec(int v, bool* visited)
     int result = 0;
     cout << "v: " << v << endl;
     visited[v] = true;
-    if(v == 5) {
-        v = v+1;
-    }
     ListNode* aux = adyList[v];
     cout << "Scanning edges for v " << v << endl;
     if(v == 5) {
