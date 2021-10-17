@@ -1,31 +1,33 @@
-#ifndef CPP_LAB_GRAPH_H
-#define CPP_LAB_GRAPH_H
+#include <string>
+#include <cstring>
 
-class Arista
+using namespace std;
+
+class ListNode
 {
 public:
-    bool existe;
-    int origen;
-    int destino;
+  ListNode *next;
+  int key;
 
-    Arista() : existe(false) {}
-    Arista() : existe(true) {}
-    Arista(int origen, int destino) : existe(true), origen(origen), destino(destino) {}
-
-    friend bool operator<(const Arista &a, const Arista &b);
-    friend bool operator==(const Arista &a, const Arista &b);
+  ListNode();
+  ListNode(int key);
+  ListNode(int key, ListNode *next);
 };
 
 
-class Grafo {
+class Graph {
 
 private:
-    Arista ***mat;
-    int tope;
-    int cant;
-    int **vertices;
-    bool esDirigido;
+    ListNode** adyList;
+    int v;
+    int dfsRec(int v, bool* visited);
 
-}
+public:
+    Graph(int v);
 
-#endif //CPP_LAB_GRAPH_H
+    void insertEdge(int origin, int destination);
+
+    ~Graph();
+
+    int hasCycle();
+};
