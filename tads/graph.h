@@ -20,7 +20,7 @@ class Graph {
 private:
     ListNode** adyList;
     int v;
-    int dfsRec(int v, bool* visited);
+    bool dfsRec(int v, bool* visited, bool* recStack);
 
 public:
     Graph(int v);
@@ -30,6 +30,4 @@ public:
     ~Graph();
 
     int hasCycle();
-
-    void printEdges();
 };

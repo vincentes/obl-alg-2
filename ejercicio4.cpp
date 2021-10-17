@@ -17,7 +17,7 @@ int main() {
         std::string destination;
         cin >> destination;
         graph->insertEdge(stoi(origin), stoi(destination));
-        graph->printEdges();
+        // graph->printEdges();
     }    
     int result = graph->hasCycle();
     cout << result;
