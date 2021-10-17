@@ -21,7 +21,17 @@ int Graph::dfsRec(int v, bool* visited)
     int result = 0;
     cout << "v: " << v << endl;
     visited[v] = true;
+    if(v == 5) {
+        v = v+1;
+    }
     ListNode* aux = adyList[v];
+    cout << "Scanning edges for v " << v << endl;
+    if(v == 5) {
+        cout << "--------" << endl;
+        cout << "v 5 detected. Printing all edges." << endl;
+        printEdges();
+        cout << "--------" << endl;
+    }
     while(aux){
         cout << "aux->key: " << aux->key << endl;
 
@@ -51,13 +61,28 @@ Graph::Graph(int v)
     {
         this->adyList[i] = NULL;
     }
-    
+
 }
 
 void Graph::insertEdge(int origin, int destination)
 {
+    cout << "inserting edge origin " << origin  << " dest " << destination << endl;
     ListNode* edge = new ListNode(destination, this->adyList[origin]);
     this->adyList[origin] = edge;
+}
+
+void Graph::printEdges() {
+    for(int origin = 1; origin <= v; origin++) {
+        cout << "edges of " << origin << endl;
+        ListNode* aux = adyList[origin];
+        if(!aux) {
+            cout << "NO EDGES FOUND!!" << endl;
+        }
+        while(aux) {
+            cout << aux->key << endl;
+            aux = aux->next;
+        }
+    }
 }
 
 Graph::~Graph()
@@ -71,6 +96,7 @@ int Graph::hasCycle()
     int result = 0;
     for (int i = 1; i <= v; i++)
     {
+        cout << "Calculating possible paths for vertex " << i << endl;
         bool *vis = new bool[v + 1];
         for (int j = 1; j <= v; vis[j++] = false)
         ;

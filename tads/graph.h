@@ -30,4 +30,6 @@ public:
     ~Graph();
 
     int hasCycle();
+
+    void printEdges();
 };
