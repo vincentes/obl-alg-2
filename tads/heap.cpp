@@ -1,10 +1,12 @@
 #include "heap.h"
-#include "iostream"
+#include <iostream>
+
+using namespace std;
 
 HeapNode::HeapNode(int key, int* list, int length) {
     this->key = key;
     this->list = list;
-    this->pos = 0;
+    this->pos = 1;
     this->length = length;
 }
 
@@ -17,7 +19,6 @@ HeapNode::~HeapNode() {
 }
 
 void HeapNode::removeKey() {
-
     key = list[pos];
     pos++;
 }
@@ -129,4 +130,11 @@ void Heap::heapifyDown() {
         }
         index = smallerChildIndex;
     }
+}
+
+void Heap::print() {
+    for(int i = 0; i < this->size; i++) {
+        cout << this->items[i]->key << " ";
+    }
+    cout << endl;
 }

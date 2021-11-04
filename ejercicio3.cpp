@@ -22,10 +22,11 @@ int main() {
             list[j] = element;
         }
 
-        heap->add(key, list, N - 1);
+        heap->add(key, list, N);
     }
 
     while(!heap->isEmpty()) {
-        cout << heap->poll() << endl;
+        int polled = heap->poll();
+        cout << polled << endl;
     }
 }

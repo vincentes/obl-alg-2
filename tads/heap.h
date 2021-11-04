@@ -40,6 +40,7 @@ public:
     int poll();
     void add(int key, int* list, int length);
     bool isEmpty();
+    void print();
 
     Heap(int capacity);
     ~Heap();

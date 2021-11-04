@@ -1,20 +1,31 @@
 using namespace std;
 
-template <class T>
-class node
+class Node
 {
 public:
-    T value;
-    node<T> *left;
-    node<T> *right;
-    node(T value);
-    node(T value, node<T> *left, node<T> *right );
+    int key;
+    Node *left;
+    Node *right;
+    int height;
+    Node();
+    Node(int key);
+    Node(int key, Node *left, Node *right);
 };
 
-template <class T>
 class Avl {
-private:
-public:
-    Avl(node root);
-    ~Avl();
+    private:
+        Node* root;
+        void preOrder(Node* node);
+        Node* insert(Node* node, int key);
+    public:
+        Avl();
+        ~Avl();
+        int max(int a, int b);
+        int height(Node *N);
+        Node* newNode(int key);
+        Node* rightRotate(Node *y);
+        Node* leftRotate(Node *x);
+        int getBalance(Node *N);
+        Node* insert(int key);
+        void preOrder();
 };
