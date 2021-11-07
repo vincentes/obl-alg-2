@@ -7,6 +7,7 @@ public:
     Node *left;
     Node *right;
     int height;
+    int count;
     Node();
     Node(int key);
     Node(int key, Node *left, Node *right);
@@ -15,8 +16,6 @@ public:
 class Avl {
     private:
         Node* root;
-        void preOrder(Node* node);
-        Node* insert(Node* node, int key);
     public:
         Avl();
         ~Avl();
@@ -26,6 +25,6 @@ class Avl {
         Node* rightRotate(Node *y);
         Node* leftRotate(Node *x);
         int getBalance(Node *N);
-        Node* insert(int key);
-        void preOrder();
+        Node* insert(Node* node, int key);
+        void inorder(Node* node);
 };

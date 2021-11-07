@@ -21,8 +21,7 @@ Node* Avl::newNode(int key) {
     node->key = key;
     node->left = NULL;
     node->right = NULL;
-    node->height = 1; // new node is initially
-    // added at leaf
+    node->height = 1;
     return node;
 };
 
@@ -31,17 +30,14 @@ Node* Avl::rightRotate(Node *y)
     Node *x = y->left;
     Node *T2 = x->right;
 
-    // Perform rotation
     x->right = y;
     y->left = T2;
 
-    // Update heights
     y->height = max(height(y->left),
                     height(y->right)) + 1;
     x->height = max(height(x->left),
                     height(x->right)) + 1;
 
-    // Return new root
     return x;
 }
 
@@ -50,17 +46,14 @@ Node* Avl::leftRotate(Node *x)
     Node *y = x->right;
     Node *T2 = y->left;
 
-    // Perform rotation
     y->left = x;
     x->right = T2;
 
-    // Update heights
     x->height = max(height(x->left),
                     height(x->right)) + 1;
     y->height = max(height(y->left),
                     height(y->right)) + 1;
 
-    // Return new root
     return y;
 }
 
@@ -70,27 +63,23 @@ int Avl::getBalance(Node *N) {
     return height(N->left) - height(N->right);
 };
 
-Node* Avl::insert(int key) {
-    return this->insert(root, key);
-}
 
 Node* Avl::insert(Node* node, int key) {
-    if (node == NULL)
-        this->root = newNode(key);
-        return this->root;
+    if (node == NULL) {
+        return newNode(key);
+    }
+
     if (key < node->key) {
         node->left = insert(node->left, key);
     } else if(key > node->key) {
         node->right = insert(node->right, key);
     } else {
+        node->count++;
         return node;
     }
 
     node->height = 1 + max(height(node->left), height(node->right));
 
-    /* 3. Get the balance factor of this ancestor
-        node to check whether this node became
-        unbalanced */
     int balance = getBalance(node);
 
     if (balance > 1 && key < node->left->key)
@@ -113,35 +102,32 @@ Node* Avl::insert(Node* node, int key) {
 }
 
 Node::Node() {
+    this->count = 1;
 };
-
 
 Node::Node(int key) {
     this->key = key;
+    this->count = 1;
 };
 
 Node::Node(int key, Node *left, Node *right) {
     this->key = key;
     this->left = left;
     this->right = right;
+    this->count = 1;
 };
 
 
-void Avl::preOrder(Node* node)
+void Avl::inorder(Node* node)
 {
-    cout << "RECURSIVE PRINTING !!!!" << endl;
-
-    if(node != NULL)
-    {
-        cout << this->root->key << " ";
-        preOrder(this->root->left);
-        preOrder(this->root->right);
+    if(node != NULL){
+        inorder(node->left);
+        for(int i = 0; i < node->count; i++) {
+            cout << node->key << endl;
+        }
+        inorder(node->right);
     }
 }
 
 
-void Avl::preOrder()
-{
-    cout << "PRINTING !!!!" << endl;
-    preOrder(this->root);
-}
+

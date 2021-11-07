@@ -1,17 +1,27 @@
 #include "graph.h"
 
 ListNode::ListNode() {
+    this->weight = 0;
     this->next = NULL;
 }
 ListNode::ListNode(int key)
 {
+    this->weight = 0;
     this->key = key;
     this->next = NULL;
 }
 ListNode::ListNode(int key, ListNode *next){
+    this->weight = 0;
     this->key = key; 
     this->next = next; 
 }
+
+ListNode::ListNode(int key, ListNode *next, int weight){
+    this->weight = weight;
+    this->key = key;
+    this->next = next;
+}
+
 
 bool Graph::dfsRec(int vertex, bool* visited, bool* recStack)
 {
@@ -51,6 +61,12 @@ Graph::Graph(int v)
 void Graph::insertEdge(int origin, int destination)
 {
     ListNode* edge = new ListNode(destination, this->adyList[origin]);
+    this->adyList[origin] = edge;
+}
+
+void Graph::insertEdge(int origin, int destination, int weight)
+{
+    ListNode* edge = new ListNode(destination, this->adyList[origin], weight);
     this->adyList[origin] = edge;
 }
 

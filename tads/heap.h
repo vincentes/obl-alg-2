@@ -14,6 +14,9 @@ public:
     void updateKey();
 };
 
+/**
+ * Min Heap
+ */
 class Heap
 {
 private:
