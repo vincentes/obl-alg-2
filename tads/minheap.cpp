@@ -1,142 +1,125 @@
-
 #include "minheap.h"
+#include <iostream>
 
-MinHeapNode::MinHeapNode(int v, int dist) {
-    this->v = v;
-    this->dist = dist;
+using namespace std;
+
+HeapNode::HeapNode(int cost, int from, int to) {
+    this->cost = cost;
+    this->from = from;
+    this->to = to;
 }
 
+HeapNode::HeapNode() {
 
-MinHeap::MinHeap(int capacity) {
-    this->size = 0;
+}
+
+HeapNode::~HeapNode() {}
+
+Heap::Heap(int capacity) {
+    this->items = new HeapNode*[capacity];
     this->capacity = capacity;
-    this->pos = new int[capacity];
-    this->array = new MinHeapNode*[capacity];
+    this->size = 0;
 }
 
-// TODO: BEWARE
-// A utility function to swap two
-// nodes of min heap.
-// Needed for min heapify
-void MinHeap::swapMinHeapNode(MinHeapNode** a, MinHeapNode** b) {
-    MinHeapNode* t = *a;
-    *a = *b;
-    *b = t;
+Heap::~Heap() {
+    delete[] this->items;
 }
 
-// A standard function to
-// heapify at given idx
-// This function also updates
-// position of nodes when they are swapped.
-// Position is needed for decreaseKey()
-void MinHeap::minHeapify(MinHeap* minHeap, int idx)
-{
-    int smallest, left, right;
-    smallest = idx;
-    left = 2 * idx + 1;
-    right = 2 * idx + 2;
+int Heap::getLeftChildIndex(int parentIndex) {
+    return 2 * parentIndex + 1;
+}
 
-    if (left < minHeap->size &&
-        minHeap->array[left]->dist <
-        minHeap->array[smallest]->dist )
-        smallest = left;
+int Heap::getRightChildIndex(int parentIndex) {
+    return 2 * parentIndex + 2;
+}
 
-    if (right < minHeap->size &&
-        minHeap->array[right]->dist <
-        minHeap->array[smallest]->dist )
-        smallest = right;
+int Heap::getParentIndex(int childIndex) {
+    return (childIndex - 1) / 2;
+}
 
-    if (smallest != idx)
-    {
-        // The nodes to be swapped in min heap
-        MinHeapNode *smallestNode =
-                minHeap->array[smallest];
-        MinHeapNode *idxNode =
-                minHeap->array[idx];
+bool Heap::hasLeftChild(int index) {
+    return getLeftChildIndex(index) < size;
+}
 
-        // Swap positions
-        minHeap->pos[smallestNode->v] = idx;
-        minHeap->pos[idxNode->v] = smallest;
+bool Heap::hasRightChild(int index) {
+    return getRightChildIndex(index) < size;
+}
 
-        // Swap nodes
-        swapMinHeapNode(&minHeap->array[smallest],
-                        &minHeap->array[idx]);
+bool Heap::hasParent(int index) {
+    return getParentIndex(index) >= 0;
+}
 
-        minHeapify(minHeap, smallest);
+int Heap::leftChild(int index) {
+    return items[getLeftChildIndex(index)]->cost;
+}
+
+int Heap::rightChild(int index) {
+    return items[getRightChildIndex(index)]->cost;
+}
+
+int Heap::parent(int index) {
+    return items[getParentIndex(index)]->cost;
+}
+
+void Heap::swap(int indexOne, int indexTwo) {
+    HeapNode* temp = items[indexOne];
+    items[indexOne] = items[indexTwo];
+    items[indexTwo] = temp;
+}
+
+int Heap::peek() {
+    return items[0]->cost;
+}
+
+bool Heap::isEmpty() {
+    return this->size == 0;
+}
+
+HeapNode* Heap::poll() {
+    HeapNode* item = items[0];
+    swap(0, size - 1);
+    delete items[size - 1];
+    size--;
+    heapifyDown();
+
+    return item;
+}
+
+void Heap::add(int cost, int from, int to) {
+    HeapNode* item = new HeapNode(cost, from, to);
+    items[size] = item;
+    size++;
+    heapifyUp();
+}
+
+void Heap::heapifyUp() {
+    int index = size - 1;
+    while(hasParent(index) && parent(index) > items[index]->cost) {
+        swap(getParentIndex(index), index);
+        index = getParentIndex(index);
     }
 }
 
-// A utility function to check if
-// the given minHeap is ampty or not
-int MinHeap::isEmpty(MinHeap* minHeap)
-{
-    return minHeap->size == 0;
-}
+void Heap::heapifyDown() {
+    int index = 0;
+    while(hasLeftChild(index)) {
+        int smallerChildIndex = getLeftChildIndex(index);
+        if(hasRightChild(index) && rightChild(index) < leftChild(index)) {
+            smallerChildIndex = getRightChildIndex(index);
+        }
 
-// Standard function to extract
-// minimum node from heap
-MinHeapNode* MinHeap::extractMin(MinHeap* minHeap)
-{
-    if (isEmpty(minHeap))
-        return NULL;
-
-    // Store the root node
-    MinHeapNode* root =
-            minHeap->array[0];
-
-    // Replace root node with last node
-    MinHeapNode* lastNode =
-            minHeap->array[minHeap->size - 1];
-    minHeap->array[0] = lastNode;
-
-    // Update position of last node
-    minHeap->pos[root->v] = minHeap->size-1;
-    minHeap->pos[lastNode->v] = 0;
-
-    // Reduce heap size and heapify root
-    --minHeap->size;
-    minHeapify(minHeap, 0);
-
-    return root;
-}
-
-// Function to decreasy dist value
-// of a given vertex v. This function
-// uses pos[] of min heap to get the
-// current index of node in min heap
-void MinHeap::decreaseKey(MinHeap* minHeap, int v, int dist)
-{
-    // Get the index of v in  heap array
-    int i = minHeap->pos[v];
-
-    // Get the node and update its dist value
-    minHeap->array[i]->dist = dist;
-
-    // Travel up while the complete
-    // tree is not hepified.
-    // This is a O(Logn) loop
-    while (i && minHeap->array[i]->dist <
-                minHeap->array[(i - 1) / 2]->dist)
-    {
-        // Swap this node with its parent
-        minHeap->pos[minHeap->array[i]->v] =
-                (i-1)/2;
-        minHeap->pos[minHeap->array[
-                (i-1)/2]->v] = i;
-        swapMinHeapNode(&minHeap->array[i],
-                        &minHeap->array[(i - 1) / 2]);
-
-        // move to parent index
-        i = (i - 1) / 2;
+        if(items[index]->cost < items[smallerChildIndex]->cost) {
+            break;
+        } else {
+            swap(index, smallerChildIndex);
+        }
+        index = smallerChildIndex;
     }
 }
 
-// A utility function to check if a given vertex
-// 'v' is in min heap or not
-bool MinHeap::isInMinHeap(MinHeap *minHeap, int v)
-{
-    if (minHeap->pos[v] < minHeap->size)
-        return true;
-
-    return false;
+void Heap::print() {
+    for(int i = 0; i < this->size; i++) {
+        cout << this->items[i]->cost << " ";
+    }
+    cout << endl;
 }

@@ -1,37 +1,47 @@
-class MinHeapNode
+class HeapNode
 {
 public:
-    int  v;
-    int dist;
-    MinHeapNode(int v, int dist);
+    int cost;
+    int from;
+    int to;
+    HeapNode(int cost, int from, int to);
+    HeapNode();
+    ~HeapNode();
+    void removeKey();
+    void updateKey();
 };
 
-
-
-// ure to represent a min heap
-class MinHeap
+/**
+ * Min Heap
+ */
+class Heap
 {
-
-public:
-    MinHeapNode **array;
-    // Number of heap nodes present currently
-    int size;
-
-    // Capacity of min heap
+private:
+    HeapNode** items;
     int capacity;
+    int size;
+    int getLeftChildIndex(int parentIndex);
+    int getRightChildIndex(int parentIndex);
+    int getParentIndex(int childIndex);
 
-    // This is needed for decreaseKey()
-    int *pos;
+    bool hasLeftChild(int index);
+    bool hasRightChild(int index);
+    bool hasParent(int index);
 
-    MinHeap(int capacity);
-    MinHeapNode* newMinHeapNode(int v, int dist);
-    MinHeap* createMinHeap(int capacity);
-    int isEmpty(MinHeap* minHeap);
-    MinHeapNode* extractMin(MinHeap* minHeap);
-    bool isInMinHeap(MinHeap *minHeap, int v);
-    void swapMinHeapNode(MinHeapNode** a, MinHeapNode** b);
-    void minHeapify(MinHeap* minHeap, int idx);
-    void decreaseKey(MinHeap* minHeap, int v, int dist);
+    int leftChild(int index);
+    int rightChild(int index);
+    int parent(int index);
+    void swap(int indexOne, int indexTwo);
+    void heapifyDown();
+    void heapifyUp();
+
+public:
+    int peek();
+    HeapNode* poll();
+    void add(int cost, int from, int to);
+    bool isEmpty();
+    void print();
+
+    Heap(int capacity);
+    ~Heap();
 };
-
-

@@ -1,106 +1,87 @@
 #include "tads/graph.cpp"
 #include "tads/minheap.cpp"
 #include <iostream>
-#define INT_MAX 2147483647
+#define INF 9999999
+
 using namespace std;
-// The main function that calculates
-// distances of shortest paths from src to all
-// vertices. It is a O(ELogV) function
+
+void addToMinHeap(Graph* graph, int src, Heap* minHeap)
+{
+    ListNode* aux = graph->adyList[src];
+    while(aux)
+    {
+        cout << "adj a 0: " << aux->key << endl;
+        minHeap->add(aux->weight,src,aux->key);
+        aux = aux->next;
+    }
+}
+
 int* dijkstra(Graph* graph, int src)
 {
+    // int vCount = 1;
+    // int* distances = new int[graph->v];
+    // for (int i = 0; i < graph->v; i++)
+    // {
+    //     distances[i] = -1;
+    // }
+    // Heap* minHeap = new Heap(graph->v);
 
-    cout << "\tInitializing variables" << endl;
-    // Get the number of vertices in graph
-    int V = graph->v;
-    cout << "\tVertex count: " << V << endl;
+    // addToMinHeap(graph, src, minHeap);
+    // while(!minHeap->isEmpty() && vCount <= graph->v)
+    // {
+    //     HeapNode* head = minHeap->poll();
+    //     vCount++;
+    //     if(head->to != src && distances[head->to] == -1)
+    //     {
+    //         distances[head->to] = distances[head->from] + head->cost;
+    //     }
+    //     addToMinHeap(graph, head->to, minHeap);
+    // }
+    
 
-    // dist values used to pick
-    // minimum weight edge in cut
-    int dist[V];
+    // return distances;
 
-    // minHeap represents set E
-    MinHeap* minHeap = new MinHeap(V);
-
-    // cout << "\tInitializing min heap with all vertices and default dist value" << endl;
-
-    // Initialize min heap with all
-    // vertices. dist value of all vertices
-    for (int v = 1; v < V; ++v)
-    {
-        // cout << "\t\tSetting dist[v] = INT_MAX" << endl;
-        dist[v] = INT_MAX;
-        // cout << "\t\tSetting array[v] = (new node)" << endl;
-
-        minHeap->array[v] = new MinHeapNode(v, dist[v]);
-        // cout << "\t\tSetting pos[v] = v" << endl;
-        minHeap->pos[v] = v;
-        // cout << "\t\tDONE Setting pos[v] = v" << endl;
-
-    }
-
-    // cout << "\tSetting variables to extract src vertex first" << endl;
-    // Make dist value of src vertex
-    // as 0 so that it is extracted first
-    // cout << "\t\tInitialize minHeap array[src]" << endl;
-    minHeap->array[src] =
-            new MinHeapNode(src, dist[src]);
-    // cout << "\t\tInitialize position[src] to src" << endl;
-    minHeap->pos[src]   = src;
-    // cout << "\t\tSet default dist[src] to zero" << endl;
+    int* dist =  new int[graph->v];
+    int* prev =  new int[graph->v];
     dist[src] = 0;
-    // cout << "\tDecreasing key" << endl;
-    minHeap->decreaseKey(minHeap, src, dist[src]);
-
-    // Initially size of min heap is equal to V
-    minHeap->size = V;
-
-    // In the followin loop,
-    // min heap contains all nodes
-    // whose shortest distance
-    // is not yet finalized.
-    while (!minHeap->isEmpty(minHeap))
+    Heap* heap = new Heap(graph->v);
+    for (int i = 0; i < graph->v; i++)
     {
-        cout << "\tENTERED WHILE LOOP" << endl;
-        // Extract the vertex with
-        // minimum distance value
-        struct MinHeapNode* minHeapNode =
-                minHeap->extractMin(minHeap);
-
-        // Store the extracted vertex number
-        int u = minHeapNode->v;
-
-        // Traverse through all adjacent
-        // vertices of u (the extracted
-        // vertex) and update
-        // their distance values
-        ListNode* pCrawl =
-                graph->adyList[u];
-        while (pCrawl != NULL)
+        if(i != src)
         {
-            int v = pCrawl->key;
-
-            // If shortest distance to v is
-            // not finalized yet, and distance to v
-            // through u is less than its
-            // previously calculated distance
-            if (minHeap->isInMinHeap(minHeap, v) &&
-                dist[u] != INT_MAX &&
-                pCrawl->weight + dist[u] < dist[v])
-            {
-                dist[v] = dist[u] + pCrawl->weight;
-
-                // update distance
-                // value in min heap also
-                minHeap->decreaseKey(minHeap, v, dist[v]);
-            }
-            pCrawl = pCrawl->next;
+            dist[i] = INF;
+            prev[i] = -1;
         }
     }
 
-    for (int i = 0; i < V; ++i)
-        printf("\t%d \t\t %d\n", i, dist[i]);
+    ListNode* v = graph->adyList[src];
+    while(v)
+    {
+        heap->add(v->weight,src,v->key);
+        v = v->next;
+    }
 
+    while(!heap->isEmpty())
+    {
+        HeapNode* head = heap->poll();
+        dist[head->to] = dist[head->from] + head->cost;
+
+        ListNode* v = graph->adyList[head->to];
+        while(v)
+        {
+            int alt = dist[head->to] + v->weight;
+            if(alt < dist[head->to])
+            {
+                dist[head->to] = alt;
+                prev[head->to] = head->from;
+                heap->add(v->weight,head->to,v->key);
+            }
+            v = v->next;
+        }
+            
+    }
     return dist;
+
 }
 
 int main() {
@@ -125,14 +106,13 @@ int main() {
 
     int V2;
     cin >> V2;
-    for(int i = 0; i < V2; i++) {
+    for(int i = 1; i < V2; i++) {
         cout << "Doing dijkstra for " << i << endl;
         int* distances = dijkstra(graph, i);
         cout << "Finished dijkstra for " << i << endl;
-
-        for(int j = 0; j < V2; j++) {
-            if(distances[j] == INT_MAX || i == j) {
-                cout << "-1" << endl;
+        for(int j = 1; j < V2; j++) {
+            if(distances[j] == INF || j == i ){
+                cout << -1 << endl;
             } else {
                 cout << distances[j] << endl;
             }
