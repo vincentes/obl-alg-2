@@ -81,8 +81,11 @@ HeapNode* Heap::poll() {
     delete items[size - 1];
     size--;
     heapifyDown();
-
-    return item;
+    HeapNode* copy = new HeapNode();
+    copy->cost = item->cost;
+    copy->from = item->from;
+    copy->to = item->to;
+    return copy;
 }
 
 void Heap::add(int cost, int from, int to) {
