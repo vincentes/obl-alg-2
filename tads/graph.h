@@ -21,6 +21,7 @@ class Graph {
 
 private:
     bool dfsRec(int v, bool* visited, bool* recStack);
+    void dfs(int v, bool* visited);
 
 public:
     int v;
@@ -34,4 +35,5 @@ public:
     ~Graph();
 
     int hasCycle();
+    int conectedComponents();
 };

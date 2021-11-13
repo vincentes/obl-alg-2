@@ -93,3 +93,37 @@ int Graph::hasCycle()
     }
     return 0;
 }
+
+void Graph::dfs(int vertex, bool* visited)
+{
+    if(!visited[vertex])
+    {
+        visited[vertex] = true;
+        ListNode* aux = adyList[vertex];
+        while(aux != NULL)
+        {
+            if(!visited[aux->key])
+            {
+                dfs(aux->key, visited);
+            }
+            aux = aux->next;
+        }
+    }
+}
+
+int Graph::conectedComponents()
+{
+    int count = 0;
+    bool* visited = new bool[v+1];
+    for (int i = 1; i <= v; i++)
+        visited[i] = false;
+ 
+    for (int i = 1; i <= v; i++) {
+        if (visited[i] == false) {
+            dfs(i, visited);
+            count++;
+        }
+    }
+    delete[] visited;
+    return count;
+}
