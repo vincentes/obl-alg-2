@@ -9,9 +9,7 @@ HeapNode::HeapNode(int cost, int from, int to) {
     this->to = to;
 }
 
-HeapNode::HeapNode() {
-
-}
+HeapNode::HeapNode() {}
 
 HeapNode::~HeapNode() {}
 
@@ -77,18 +75,32 @@ bool Heap::isEmpty() {
 
 HeapNode* Heap::poll() {
     HeapNode* item = items[0];
+    HeapNode* copy = new HeapNode(item->cost, item->from, item->to);
+
     swap(0, size - 1);
     delete items[size - 1];
+    items[size - 1] = NULL;
     size--;
-    heapifyDown();
-    HeapNode* copy = new HeapNode();
-    copy->cost = item->cost;
-    copy->from = item->from;
-    copy->to = item->to;
+    heapifyDown();\
+    
     return copy;
 }
 
+void Heap::ensureExtraCapacity() {
+    if(size == capacity) {
+        HeapNode** newItems = new HeapNode*[capacity * 2];
+        for (int i = 0; i < size; i++)
+        {
+            newItems[i] = this->items[i];
+        }
+        this->items = newItems;
+        capacity = capacity * 2;
+        // delete[] newItems;
+    }
+}
+
 void Heap::add(int cost, int from, int to) {
+    ensureExtraCapacity();
     HeapNode* item = new HeapNode(cost, from, to);
     items[size] = item;
     size++;
@@ -122,7 +134,7 @@ void Heap::heapifyDown() {
 
 void Heap::print() {
     for(int i = 0; i < this->size; i++) {
-        cout << this->items[i]->cost << " ";
+        cout << "[ " << this->items[i]->to << " " << items[i]->cost << "] ";
     }
     cout << endl;
 }
