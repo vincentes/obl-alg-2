@@ -4,6 +4,12 @@
         "__split_buffer": "cpp",
         "filesystem": "cpp",
         "string": "cpp",
-        "vector": "cpp"
+        "vector": "cpp",
+        "__hash_table": "cpp",
+        "__locale": "cpp",
+        "algorithm": "cpp",
+        "functional": "cpp",
+        "ios": "cpp",
+        "complex": "cpp"
     }
 }
