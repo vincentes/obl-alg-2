@@ -1,26 +1,34 @@
 #include "graph.h"
 
-ListNode::ListNode() {
+Edge::Edge() {
     this->weight = 0;
     this->next = NULL;
 }
-ListNode::ListNode(int key)
+Edge::Edge(int key)
 {
     this->weight = 0;
     this->key = key;
     this->next = NULL;
 }
-ListNode::ListNode(int key, ListNode *next){
+Edge::Edge(int key, Edge *next){
     this->weight = 0;
     this->key = key; 
     this->next = next; 
 }
 
-ListNode::ListNode(int key, ListNode *next, int weight){
+Edge::Edge(int key, Edge *next, int weight){
     this->weight = weight;
     this->key = key;
     this->next = next;
 }
+
+Edge::Edge(int key, Edge *next, int weight, int source){
+    this->weight = weight;
+    this->key = key;
+    this->next = next;
+    this->origin = source;
+}
+
 
 
 bool Graph::dfsRec(int vertex, bool* visited, bool* recStack)
@@ -30,7 +38,7 @@ bool Graph::dfsRec(int vertex, bool* visited, bool* recStack)
         visited[vertex] = true;
         recStack[vertex] = true;
 
-        ListNode* aux = adyList[vertex];
+        Edge* aux = adyList[vertex];
         while(aux != NULL)
         {
             if(!visited[aux->key] && dfsRec(aux->key, visited, recStack))
@@ -51,7 +59,7 @@ bool Graph::dfsRec(int vertex, bool* visited, bool* recStack)
 Graph::Graph(int v) 
 {
     this->v = v;
-    this->adyList = new ListNode* [v+1];
+    this->adyList = new Edge* [v+1];
     for (int i = 0; i <= v; i++)
     {
         this->adyList[i] = NULL;
@@ -60,13 +68,13 @@ Graph::Graph(int v)
 
 void Graph::insertEdge(int origin, int destination)
 {
-    ListNode* edge = new ListNode(destination, this->adyList[origin]);
+    Edge* edge = new Edge(destination, this->adyList[origin]);
     this->adyList[origin] = edge;
 }
 
 void Graph::insertEdge(int origin, int destination, int weight)
 {
-    ListNode* edge = new ListNode(destination, this->adyList[origin], weight);
+    Edge* edge = new Edge(destination, this->adyList[origin], weight);
     this->adyList[origin] = edge;
 }
 
@@ -92,4 +100,41 @@ int Graph::hasCycle()
         }
     }
     return 0;
+}
+
+
+
+bool operator<(const Edge &a, const Edge &b)
+{
+  return a.weight < b.weight;
+}
+
+bool operator==(const Edge &a, const Edge &b)
+{
+  return a.weight == b.weight;
+}
+
+bool operator<=(const Edge &a, const Edge &b)
+{
+  return a == b || a < b;
+}
+
+bool operator>(const Edge &a, const Edge &b)
+{
+  return !(a <= b);
+}
+
+bool operator>=(const Edge &a, const Edge &b)
+{
+  return !(a < b);
+}
+
+bool operator!=(const Edge &a, const Edge &b)
+{
+  return !(a == b);
+}
+
+int fCompEdge(Edge *a, Edge *b)
+{
+  return a->weight - b->weight;
 }
