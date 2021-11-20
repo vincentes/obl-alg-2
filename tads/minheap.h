@@ -34,6 +34,7 @@ private:
     void swap(int indexOne, int indexTwo);
     void heapifyDown();
     void heapifyUp();
+    void ensureExtraCapacity();
 
 public:
     int peek();

@@ -102,39 +102,36 @@ int Graph::hasCycle()
     return 0;
 }
 
-
-
-bool operator<(const Edge &a, const Edge &b)
+void Graph::dfs(int vertex, bool* visited)
 {
-  return a.weight < b.weight;
+    if(!visited[vertex])
+    {
+        visited[vertex] = true;
+        Edge* aux = adyList[vertex];
+        while(aux != NULL)
+        {
+            if(!visited[aux->key])
+            {
+                dfs(aux->key, visited);
+            }
+            aux = aux->next;
+        }
+    }
 }
 
-bool operator==(const Edge &a, const Edge &b)
+int Graph::conectedComponents()
 {
-  return a.weight == b.weight;
-}
-
-bool operator<=(const Edge &a, const Edge &b)
-{
-  return a == b || a < b;
-}
-
-bool operator>(const Edge &a, const Edge &b)
-{
-  return !(a <= b);
-}
-
-bool operator>=(const Edge &a, const Edge &b)
-{
-  return !(a < b);
-}
-
-bool operator!=(const Edge &a, const Edge &b)
-{
-  return !(a == b);
-}
-
-int fCompEdge(Edge *a, Edge *b)
-{
-  return a->weight - b->weight;
+    int count = 0;
+    bool* visited = new bool[v+1];
+    for (int i = 1; i <= v; i++)
+        visited[i] = false;
+ 
+    for (int i = 1; i <= v; i++) {
+        if (visited[i] == false) {
+            dfs(i, visited);
+            count++;
+        }
+    }
+    delete[] visited;
+    return count;
 }
