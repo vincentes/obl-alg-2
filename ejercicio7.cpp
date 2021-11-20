@@ -42,7 +42,6 @@ int ifNotRight(int m, int n, int i, int j) {
 
 
 int bfs(int m, int n, int** matrix, Lista<CellData*>* positives, int negatives) {
-    cout << "BFS" << endl;
     CellData* cell = new CellData(-1, -1, -1);
     while(positives->largo() != 0 && negatives > 0) {
         cell = positives->obtenerPpio();
