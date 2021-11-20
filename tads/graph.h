@@ -3,17 +3,20 @@
 
 using namespace std;
 
-class ListNode
+class Edge
 {
 public:
-  ListNode *next;
+  Edge *next;
   int key;
+  int origin;
+  int target;
   int weight;
 
-  ListNode();
-  ListNode(int key);
-  ListNode(int key, ListNode *next);
-  ListNode(int key, ListNode *next, int weight);
+  Edge();
+  Edge(int key);
+  Edge(int key, Edge *next);
+  Edge(int key, Edge *next, int weight);
+  Edge(int key, Edge *next, int weight, int source);
 };
 
 
@@ -25,7 +28,7 @@ private:
 
 public:
     int v;
-    ListNode** adyList;
+    Edge** adyList;
 
     Graph(int v);
 

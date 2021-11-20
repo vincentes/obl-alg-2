@@ -19,7 +19,7 @@ int* dijkstra(Graph* graph, int src)
         }
     }
 
-    ListNode* v = graph->adyList[src];
+    Edge* v = graph->adyList[src];
     while(v)
     {
         dist[v->key]=v->weight;
@@ -30,7 +30,7 @@ int* dijkstra(Graph* graph, int src)
     while(!heap->isEmpty())
     {
         HeapNode* head = heap->poll();
-        ListNode* v = graph->adyList[head->to];
+        Edge* v = graph->adyList[head->to];
         while(v)
         {   
             int alt = dist[head->to] + v->weight;
