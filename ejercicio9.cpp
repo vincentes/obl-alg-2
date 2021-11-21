@@ -20,13 +20,13 @@ public:
     int height;
     Strip()
     {
-        left = 0;
-        height = 0;
+        this->left = 0;
+        this->height = 0;
     }
-    Strip(int l, int h)
+    Strip(int left, int height)
     {
-        left = l;
-        height = h;
+        this->left = left;
+        this->height = height;
     }
 };
   
@@ -44,8 +44,8 @@ public:
     SkyLine(int capacity)
     {
         this->capacity = capacity;
-        array = new Strip[capacity];
-        size = 0;
+        this->array = new Strip[capacity];
+        this->size = 0;
     }
   
     void append(Strip* strip)
