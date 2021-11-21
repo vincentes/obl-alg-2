@@ -5,10 +5,6 @@
 
 using namespace std;
 
-// Divide the given set of buildings in two subsets. 
-// Recursively construct skyline for two halves and 
-// finally merge the two skylines.
-
 class Building {
 public:
     int xLeft;
@@ -76,7 +72,7 @@ public:
 SkyLine* findSkyline(Building array[], int firstBuilding, int lastBuilding)
 {
     if (firstBuilding == lastBuilding) {
-        // one building has two points in the skyline
+        // one building needs two points to define skyline
         SkyLine* result = new SkyLine(2);
         // add strips
         result->append(
@@ -87,6 +83,7 @@ SkyLine* findSkyline(Building array[], int firstBuilding, int lastBuilding)
     }
     int mid = (firstBuilding + lastBuilding) / 2;
 
+    // Divide & conquer
     SkyLine* sLeft = findSkyline(array, firstBuilding, mid);
     SkyLine* sRight = findSkyline(array, mid+1, lastBuilding);
     SkyLine* result = sLeft->Merge(sRight);
@@ -105,7 +102,7 @@ SkyLine* SkyLine::Merge(SkyLine* other)
     int i = 0, j = 0;
 
     while (i < this->size && j < other->size) {
-        // compare strips
+        // compare strips setting hight according to the highest one
         if (this->array[i].left <= other->array[j].left) {
             int x1 = this->array[i].left;
             h1 = this->array[i].height;
@@ -125,11 +122,11 @@ SkyLine* SkyLine::Merge(SkyLine* other)
     }
   
     while (i < this->size) {
-        result->append(&array[i]);
+        result->append(new Strip(other->array[i].left, other->array[i].height));
         i++;
     }
     while (j < other->size) {
-        result->append(&other->array[j]);
+        result->append(new Strip(other->array[j].left, other->array[j].height));
         j++;
     }
     return result;
