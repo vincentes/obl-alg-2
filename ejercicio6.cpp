@@ -186,7 +186,7 @@ public:
     int pos = obtenerPrimerVerticeNoNull();
 
     // Inicializo visitados
-    bool *vis = new bool[tope];
+    bool *vis = new bool[cant];
     for (int i = 0; i < tope; vis[i++] = false)
       ;
 
@@ -251,7 +251,7 @@ public:
 int main() {
     int V;
     cin >> V;
-    Grafo* graph = new Grafo(V + 20, false);
+    Grafo* graph = new Grafo(V, false);
     int E;
     cin >> E;
     for (int i = 0; i < E; i++) {
@@ -261,8 +261,13 @@ int main() {
         cin >> destination;
         std::string weight;
         cin >> weight;
-        graph->insertarVertice(stoi(origin));
-        graph->insertarVertice(stoi(destination));
+        if(!graph->existeVertice(stoi(origin))) {
+          graph->insertarVertice(stoi(origin));
+        }
+
+        if(!graph->existeVertice(stoi(destination))) {
+          graph->insertarVertice(stoi(destination));
+        }
         graph->insertarArista(stoi(origin), stoi(destination), stoi(weight));
     }
 
