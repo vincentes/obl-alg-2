@@ -22,7 +22,7 @@ int main() {
     deleteNodes(root);
 
     root = NULL;
-
+    delete avl;
     return 0;
 }
 

@@ -21,4 +21,5 @@ int main() {
     }    
     int result = graph->conectedComponents();
     cout << result;
+    delete graph;
 }

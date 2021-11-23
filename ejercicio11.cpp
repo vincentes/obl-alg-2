@@ -59,6 +59,6 @@ int main()
     entrega(archivos, N, 0, S, L, 0, solActual, puntajeOptimo);
 
     cout << puntajeOptimo << endl;
-
+    delete archivos;
     return 0;
 }

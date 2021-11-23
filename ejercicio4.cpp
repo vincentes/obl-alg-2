@@ -21,4 +21,5 @@ int main() {
     }    
     int result = graph->hasCycle();
     cout << result;
+    delete graph;
 }
