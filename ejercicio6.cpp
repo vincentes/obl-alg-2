@@ -272,4 +272,5 @@ int main() {
     }
 
     cout << graph->prim(false) << endl;
+    delete graph;
 }

@@ -29,4 +29,5 @@ int main() {
         int polled = heap->poll();
         cout << polled << endl;
     }
+    delete heap;
 }
