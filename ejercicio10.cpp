@@ -70,20 +70,20 @@ int main()
 
     cout << "Starting iterative process" << endl;
 
-    for (short i = 1; i < N; i++)
+    for (short i = 1; i <= S; i++)
     {
-        for (short j = 1; j <= S; j++)
+        for (short j = 1; j <= N; j++)
             {
                 for(short k = 0; k <= L; k++) {
-                    if(files[j - 1]->size  <= j && files[k - 1]->lines <= k) {
+                    if(files[j - 1]->size  <= j && files[j - 1]->lines <= k) {
                         // No hay espacio
-                        cout << "IP. No space found." << endl;
+                        // cout << "IP. No space found." << endl;
                         matDP[i][j][k] = matDP[i][j - 1][k];
                     } else {
                         // Si hay espacio
-                        cout << "IP. Found space. i: " << i << " j: " << j << " k: " << k << endl;
-                        cout << "First term " << matDP[i - 1][j - 1][k - files[i]->lines] + files[i - 1]->grade << endl;
-                        cout << "SECOND TERM " << matDP[i][j - 1][k] << endl;
+                        // cout << "IP. Found space. i: " << i << " j: " << j << " k: " << k << endl;
+                        // cout << "First term " << matDP[i - 1][j - 1][k - files[i]->lines] + files[i - 1]->grade << endl;
+                        // cout << "SECOND TERM " << matDP[i][j - 1][k] << endl;
                         matDP[i][j][k] = max(matDP[i - 1][j - 1][k - files[i]->lines] + files[i - 1]->grade, matDP[i][j - 1][k]);
                     }
                 }
@@ -99,17 +99,8 @@ int main()
     }
     cout << endl;
 
-    for (short i = 0; i < N; i++)
-    {
-        cout << files[i]->size << "," << files[i]->lines << "\t";
-        for (short j = 0; j <= S; j++)
-        {
-            for(short k = 0; k <= L; k++) {
-                cout << matDP[i][j][k] << "\t";
-            }
-            cout << endl;
-        }
-        cout << endl;
-    }
+
+    cout << matDP[N - 1][S][L] << "\t";
+   
     return 0;
 }
