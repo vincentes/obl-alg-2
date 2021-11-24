@@ -158,5 +158,6 @@ int main()
     SkyLine* skyLine = findSkyline(buildings, 0, B-1);
     skyLine->print();
     delete skyLine;
+    delete[] buildings;
     return 0;
 }

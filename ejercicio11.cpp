@@ -60,5 +60,6 @@ int main()
 
     cout << puntajeOptimo << endl;
     delete archivos;
+    delete[] solActual;
     return 0;
 }

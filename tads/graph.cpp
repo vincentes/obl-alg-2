@@ -80,7 +80,7 @@ void Graph::insertEdge(int origin, int destination, int weight)
 
 Graph::~Graph()
 {
-
+    delete[] adyList;
 }
 
 int Graph::hasCycle()
