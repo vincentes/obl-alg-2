@@ -77,17 +77,27 @@ int main()
         }
     }
 
-    cout << "DONE" << endl;
+    // cout << "DONE" << endl;
 
-    cout << "\t";
-    for (short j = 0; j <= N; j++)
-    {
-        cout << j << "\t";
-    }
-    cout << endl;
+    // cout << "\t";
+    // for (short j = 0; j <= N; j++)
+    // {
+    //     // cout << j << "\t";
+    // }
+    // cout << endl;
 
 
     cout << matDP[N - 1][S][L] << "\t";
-   
+
+
+   for (int i = 1; i < N; i++) {
+        for(int j = 1; j <= S; j++) {
+            delete[] matDP[i][j];
+        }
+
+        delete[] matDP[i];
+    }
+
+    delete[] matDP;
     return 0;
 }
