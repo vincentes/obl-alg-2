@@ -24,7 +24,6 @@ public:
 };
 
 int ifNotTop(int m, int n, int i, int j) {
-    cout << "IS TOP: " << !(i == 0) << endl; 
     return !(i == 0);
 }
 
