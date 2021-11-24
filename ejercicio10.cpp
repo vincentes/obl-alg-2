@@ -52,42 +52,29 @@ int main()
     }
 
     cout << "Initializing initial values" << endl;
-    for (short j = 1; j <= S; j++)
-    {
-        for(short k = 1; k <= L; k++) {
-            if(j < files[0]->size &&  k < files[0]->lines) {
-                // No hay espacio
-                cout << "No space found." << endl;
-                matDP[0][j][k] = 0;
-            } else {
-                // Si hay espacio
-                cout << "Found space." << endl;
-                matDP[0][j][k] = files[0]->grade;
-            }
+    for(int j = 1; j <= S; j++) {
+        for(int k = 1; k <= L; k++) {
+            matDP[0][j][k] = (j < files[0]->size) ? 0 : files[0]->grade;
         }
     }
 
-
-    cout << "Starting iterative process" << endl;
-
-    for (short i = 1; i <= S; i++)
-    {
-        for (short j = 1; j <= N; j++)
-            {
-                for(short k = 0; k <= L; k++) {
-                    if(files[j - 1]->size  <= j && files[j - 1]->lines <= k) {
-                        // No hay espacio
-                        // cout << "IP. No space found." << endl;
-                        matDP[i][j][k] = matDP[i][j - 1][k];
-                    } else {
-                        // Si hay espacio
-                        // cout << "IP. Found space. i: " << i << " j: " << j << " k: " << k << endl;
-                        // cout << "First term " << matDP[i - 1][j - 1][k - files[i]->lines] + files[i - 1]->grade << endl;
-                        // cout << "SECOND TERM " << matDP[i][j - 1][k] << endl;
-                        matDP[i][j][k] = max(matDP[i - 1][j - 1][k - files[i]->lines] + files[i - 1]->grade, matDP[i][j - 1][k]);
-                    }
+    for (int i = 1; i < N; i++) {
+        for(int j = 1; j <= S; j++) {
+            for (int k = 1; k <= L; k++) {
+                if(j < files[i]->size || k < files[i]->lines) {
+                    // cout << "IP. No space found." << endl;
+                    matDP[i][j][k] = matDP[i - 1][j][k]; 
+                } else {
+                    // cout << "IP. Found space. i: " << i << " j: " << j << " k: " << k << endl;
+                    // cout << "Size " << files[i]->size << endl;
+                    // cout << "j - files[i]->size = " << j - files[i]->size << endl;
+                    // cout << "k - files[i]->lines = " << k - files[i]->lines;
+                    // cout << "First term " << matDP[i - 1][j - files[i]->size][k - files[i]->lines] + files[i]->grade << endl;
+                    // cout << "SECOND TERM " << matDP[i - 1][j][k] << endl;
+                    matDP[i][j][k] = max(matDP[i - 1][j][k], matDP[i - 1][j - files[i]->size][k - files[i]->lines] + files[i]->grade);
                 }
             }
+        }
     }
 
     cout << "DONE" << endl;
