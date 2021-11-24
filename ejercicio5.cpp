@@ -85,6 +85,7 @@ int main() {
         }
         delete[] distances;
     }
+    
     delete graph;
     return 0;
 }

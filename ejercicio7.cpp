@@ -95,4 +95,5 @@ int main() {
     }
 
     cout << bfs(M, N, matrix, positives, negatives) << endl;
+    delete positives;
 }
